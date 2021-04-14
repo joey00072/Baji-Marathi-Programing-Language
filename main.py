@@ -235,10 +235,10 @@ class Parser:
                 res.register(self.advance())
                 return res.success(expr)
             else:
-                return InvalidSyntaxError(
-                    self.current_token.pos_start, self.current_token.pos_end,
-                    " अपेक्षित (Expected) ')'"
-                )
+                return res.failure(InvalidSyntaxError(
+                self.current_token.pos_start,self.current_token.pos_end,
+                "अपेक्षित(Expected) ')' "
+            ))
 
 
         return res.failure(InvalidSyntaxError(
