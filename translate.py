@@ -10,6 +10,7 @@ class Translate(object):
                              '७': '7',
                              '८': '8',
                              '९': '9'}
+                             
         self.DIGITS_E_TO_M={'0': '०',
                              '1': '१',
                              '2': '२',

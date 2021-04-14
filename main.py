@@ -408,13 +408,14 @@ def run(fn, text):
     # Genarate Tokens
     tokens, error = lexer.make_tokens()
     translate = Translate()
+    print(tokens)
     if error:
         return None, error
 
     # Generate AST
     parser = Parser(tokens)
     ast = parser.parse()
-
+    print(ast.node)
     if ast.error: 
         return None, ast.error
 
