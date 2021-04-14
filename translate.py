@@ -24,5 +24,22 @@ class Translate(object):
     def digit_to_eng(self,num_char):
         if num_char in self.DIGITS_M_TO_E:
             return self.DIGITS_M_TO_E[num_char]
-
         return num_char
+    def digit_to_mar(self,num_char):
+        if num_char in self.DIGITS_E_TO_M:
+            return self.DIGITS_E_TO_M[num_char]
+        return num_char
+    def number_to_mar(self,num):
+        num=str(num)
+        result = ''
+        for char in num:
+            if char=='.':
+                result+='.'
+            else:
+                result+=self.digit_to_mar(char)
+        return result
+
+
+    
+
+        
