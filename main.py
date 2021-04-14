@@ -37,28 +37,19 @@ TT_MUL = 'MUL'
 TT_DIV = 'DIV'
 TT_LPAREN = 'LPAREN'
 TT_RPAREN = 'RPAREN'
-
-
-TT_INT = 'INT'
-TT_FLOAT = 'FLOAT'
-TT_PLUS = 'PLUS'
-TT_MINUS = 'MINUS'
-TT_MUL = 'MUL'
-TT_DIV = 'DIV'
-TT_LPAREN = 'LPAREN'
-TT_RPAREN = 'RPAREN'
+TT_EOF ="EOF"
 
 
 class Token(object):
     def __init__(self, type_, value=None, pos_start=None, pos_end=None):
         self.type = type_
         self.value = value
-        if self.pos_start:
+        if pos_start:
             self.pos_start = pos_start.copy()
-            self.pos_end = pos_end.copy()
+            self.pos_end = pos_start.copy()
             self.pos_end.advance()
 
-        if self.pos_end:
+        if pos_end:
             self.pos_end = pos_end.copy()
 
     def __repr__(self):
@@ -105,7 +96,7 @@ class Lexer(object):
 
         if token:
             self.advance()
-            return Token(token)
+            return Token(token,pos_start=self.pos)
 
         if self.current_char in DIGITS:
             return self.make_number()
@@ -126,11 +117,13 @@ class Lexer(object):
                 return [], current_token
             tokens.append(current_token)
 
+        tokens.append(Token(TT_EOF,pos_start=self.pos))
         return tokens, None
 
     def make_number(self):
         num_str = ''
         dot = False
+        pos_start=self.pos
 
         while self.current_char != None and self.current_char in DIGITS+'.':
             if self.current_char == '.':
@@ -143,9 +136,9 @@ class Lexer(object):
             self.advance()
 
         if dot:
-            return Token(TT_FLOAT, float(num_str))
+            return Token(TT_FLOAT, float(num_str),pos_start=pos_start,pos_end=self.pos)
         else:
-            return Token(TT_INT, int(num_str))
+            return Token(TT_INT, int(num_str),pos_start=pos_start,pos_end=self.pos)
 
 
 # ------------NODES----------------
@@ -175,8 +168,9 @@ class ParseResult:
 
     def register(self, res):
         if isinstance(res, ParseResult):
-            if res.error == self.error:
-                return res.node
+            if res.error:
+                self.error= res.error
+            return res.node
         return res
 
     def success(self, node):
@@ -205,8 +199,13 @@ class Parser:
     #-------------------#
 
     def parse(self):
-        result = self.expr()
-        return result
+        res = self.expr()
+        if not res.error and self.current_token.type != TT_EOF:
+            return res.failure(InvalidSyntaxError(
+                self.current_token.pos_start,self.current_token.pos_end,
+                "अपेक्षित(Expected) '+','-', '*' or  '/'"
+            ))
+        return res
 
     def factor(self):
         res = ParseResult()
@@ -214,7 +213,7 @@ class Parser:
         if self.current_token.type in (TT_INT, TT_FLOAT):
             res.register(self.advance())
             return res.success(NumberNode(token))
-        return res.failure(IndentationError(
+        return res.failure(InvalidSyntaxError(
             token.pos_start,
             token.pos_end,
             "अपेक्षित संख्या किंवा फ्लोट (Expected int or float)"
@@ -230,16 +229,16 @@ class Parser:
         res = ParseResult()
         left = res.register(func())
         if res.error:
-            res
+            return res
 
         while self.current_token.type in ops:
             op_token = self.current_token
             res.register(self.advance())
             right = res.register(func())
             if res.error:
-                return res
+                return  res
             left = BinOpNode(left, op_token, right)
-        return left
+        return res.success(left)
 
 
 # ------------RUN-----------------
@@ -254,4 +253,4 @@ def run(fn, text):
     # Generate AST
     parser = Parser(tokens)
     ast = parser.parse()
-    return ast, None
+    return ast.node, ast.error
