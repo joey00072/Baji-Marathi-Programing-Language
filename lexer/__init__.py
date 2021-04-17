@@ -1,6 +1,6 @@
-from translate import Translate
+from Translate import Translate
 from Errors import Error,IllegalCharacterError,InvalidSyntaxError
-from lexer.constants import *
+from Constants import *
 
 
 
@@ -61,6 +61,11 @@ class Lexer(object):
         self.pos.advance(self.current_char)
         self.current_char = self.text[self.pos.idx] if self.pos.idx < len(
             self.text) else None
+    def peak(self,idx=1):
+        if self.pos.idx +idx< len(self.text):
+            return  self.text[self.pos.idx+idx] 
+        return None
+        
 
     def primitive_token(self):
         if self.current_char == '+':
@@ -70,6 +75,10 @@ class Lexer(object):
             return TT_MINUS
 
         if self.current_char == '*':
+            nxt=self.peak()
+            if nxt=='*':
+                self.advance()
+                return TT_POWER
             return TT_MUL
 
         if self.current_char == '/':

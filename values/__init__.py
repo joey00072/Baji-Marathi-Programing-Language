@@ -1,5 +1,5 @@
 from Errors import RTError
-from translate import Translate
+from Translate import Translate
 #------------Values-----------------
 class Number:
     def __init__(self, value):
@@ -39,6 +39,11 @@ class Number:
                 )
 
             return Number(self.value / other.value).set_context(self.context), None
+
+    def power_by(self,other):
+        if isinstance(other,Number):
+            return Number(self.value ** other.value).set_context(self.context), None
+
 
     def __repr__(self):
         return self.translate.number_to_mar(self.value)

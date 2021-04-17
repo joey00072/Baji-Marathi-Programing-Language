@@ -1,8 +1,13 @@
 ## GRAMMAR
 
 
-        expr        :term((PLUS|MINUS) term)*
+        expr    :term((PLUS|MINUS) term)*
 ---
-        term        :factor((MUL|DIV) factor)*
+        term    :factor((MUL|DIV) power)*
 ---
-        factor      : INT | FLOAT
+        factor  :(PLUS|MINUS) factor
+                :power
+---
+        power   :atom(POWER factor)*
+---
+        atom    : INT | FLOAT

@@ -60,7 +60,7 @@ class InvalidSyntaxError(Error):
 
 class RTError(Error):
     def __init__(self, pos_start, pos_end, details, context):
-        super().__init__(pos_start, pos_end, 'Runtime Error', details)
+        super().__init__('Runtime Error',pos_start, pos_end, details)
         self.context = context
 
     def as_string(self):
