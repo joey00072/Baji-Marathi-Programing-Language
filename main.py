@@ -2,11 +2,14 @@ from Lexer import Lexer
 from Parser import Parser 
 from Interpreter import Interpreter
 from Context import Context
+from SymbolTable import SymbolTable,global_symbol_table
 
 
 # ------------RUN-----------------
+global_symbol_table = SymbolTable()
 
 def run(fn, text):
+    print(global_symbol_table.symbols)
     lexer = Lexer(fn, text)
     # Genarate Tokens
     tokens, error = lexer.make_tokens()
@@ -27,6 +30,7 @@ def run(fn, text):
     # Run program
     interpreter = Interpreter()
     context = Context('<program>')
+    context.symbol_table = global_symbol_table
     result = interpreter.visit(ast.node, context)
     
     return  result.value, result.error

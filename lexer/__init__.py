@@ -41,7 +41,9 @@ class Token(object):
 
         if pos_end:
             self.pos_end = pos_end.copy()
-
+            
+    def matches(self, type_, value):
+        return self.type == type_ and self.value == value
     def __repr__(self):
         return f"{self.type}:{self.value}" if self.value else f"{self.type}"
 
@@ -89,6 +91,9 @@ class Lexer(object):
 
         if self.current_char == ')':
             return TT_RPAREN
+        
+        if self.current_char == '=':
+            return TT_EQ
 
     def get_token(self):
         token = self.primitive_token()
@@ -99,6 +104,9 @@ class Lexer(object):
 
         if self.current_char in DIGITS:
             return self.make_number()
+        
+        if self.current_char in LATTERS:
+            return self.make_identifier()
 
         position_start = self.pos.copy()
 
@@ -138,3 +146,14 @@ class Lexer(object):
             return Token(TT_FLOAT, float(num_str),pos_start=pos_start,pos_end=self.pos)
         else:
             return Token(TT_INT, int(num_str),pos_start=pos_start,pos_end=self.pos)
+
+    def make_identifier(self):
+        id_str = ''
+        pos_start=self.pos
+
+        while self.current_char != None and self.current_char in LATTERS_DIGITS+'_':
+            id_str+= self.translate.digit_to_eng(self.current_char)
+            self.advance()
+
+        token_type= TT_KEYWORD if id_str in KEYWORDS else TT_IDENTIFIER
+        return Token(token_type,id_str,pos_start,self.pos)

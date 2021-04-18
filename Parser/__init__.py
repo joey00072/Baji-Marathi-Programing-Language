@@ -1,5 +1,5 @@
 from Errors import InvalidSyntaxError
-from Nodes import NumberNode,BinOpNode,UnaryOpNode
+from Nodes import NumberNode,BinOpNode,UnaryOpNode,VarAssignNode,VarAccessNode
 from Constants import *
 from results import ParseResult
 from Context import Context
@@ -36,6 +36,11 @@ class Parser:
             res.register(self.advance())
             return res.success(NumberNode(token))
 
+        if self.current_token.type in (TT_IDENTIFIER):
+            res.register(self.advance())
+            return res.success(VarAccessNode(token))
+
+
         if token.type == TT_LPAREN:
             res.register(self.advance())
             expr = res.register(self.expr())
@@ -51,6 +56,7 @@ class Parser:
                 self.current_token.pos_start,self.current_token.pos_end,
                 "अपेक्षित(Expected) int,float, '+','-' or  '('"
             ))
+        
 
 
     def factor(self):
@@ -72,7 +78,35 @@ class Parser:
         return self.bin_op(self.power, (TT_MUL, TT_DIV)) 
 
     def expr(self):
-        return self.bin_op(self.term, (TT_PLUS, TT_MINUS))
+        res = ParseResult()
+        if self.current_token.matches(TT_KEYWORD,'var') or self.current_token.matches(TT_KEYWORD,'चल'):
+            res.register(self.advance())
+            if self.current_token.type != 'IDENTIFIER':
+                return res.failure(InvalidSyntaxError(
+                            self.current_token.pos_start,self.current_token.pos_end,
+                            "अपेक्षित चल शब्द (Expected Identifier)"
+                            ))
+            var_name = self.current_token
+            res.register(self.advance())
+
+            if self.current_token.type != TT_EQ:
+               return  res.failure(InvalidSyntaxError(
+                            self.current_token.pos_start,self.current_token.pos_end,
+                            "अपेक्षित = (Expected =)"
+                            ))
+            res.register(self.advance())
+            expr = res.register(self.expr())
+            if res.error:
+                return res
+            return res.success(VarAssignNode(var_name,expr))
+
+        node = res.register(self.bin_op(self.term,(TT_PLUS,TT_MINUS)))
+        if res.error:
+            return res.failure(InvalidSyntaxError(
+                self.current_token.pos_start, self.current_token.pos_end,
+                "Expected 'VAR', int, float, identifier, '+', '-' or '('"
+            ))
+        return res.success(node)
 
     def bin_op(self, func_a, ops,func_b=None):
         if func_b==None:
