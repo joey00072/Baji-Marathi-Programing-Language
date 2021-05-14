@@ -6,7 +6,7 @@ from SymbolTable import SymbolTable,global_symbol_table
 
 
 # ------------RUN-----------------
-global_symbol_table = SymbolTable()
+# global_symbol_table = SymbolTable()
 
 def run(fn, text):
     print(global_symbol_table.symbols)
