@@ -33,19 +33,23 @@ class Parser:
         res = ParseResult()
         token = self.current_token
         if self.current_token.type in (TT_INT, TT_FLOAT):
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             return res.success(NumberNode(token))
 
         if self.current_token.type in (TT_IDENTIFIER):
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             return res.success(VarAccessNode(token))
 
 
         if token.type == TT_LPAREN:
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             expr = res.register(self.expr())
             if self.current_token.type == TT_RPAREN:
-                res.register(self.advance())
+                res.register_advancement()
+                self.advance()
                 return res.success(expr)
             else:
                 return res.failure(InvalidSyntaxError(
@@ -54,7 +58,7 @@ class Parser:
             ))
         return res.failure(InvalidSyntaxError(
                 self.current_token.pos_start,self.current_token.pos_end,
-                "अपेक्षित(Expected) int,float, '+','-' or  '('"
+                "अपेक्षित(Expected) int,float, identifier '+','-' or  '('"
             ))
         
 
@@ -63,7 +67,8 @@ class Parser:
         res = ParseResult()
         token = self.current_token
         if token.type in (TT_PLUS, TT_MINUS):
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             factor = res.register(self.factor())
             if res.error: return res
             return res.success(UnaryOpNode(token, factor))
@@ -80,21 +85,24 @@ class Parser:
     def expr(self):
         res = ParseResult()
         if self.current_token.matches(TT_KEYWORD,'var') or self.current_token.matches(TT_KEYWORD,'चल'):
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             if self.current_token.type != 'IDENTIFIER':
                 return res.failure(InvalidSyntaxError(
                             self.current_token.pos_start,self.current_token.pos_end,
                             "अपेक्षित चल शब्द (Expected Identifier)"
                             ))
             var_name = self.current_token
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
 
             if self.current_token.type != TT_EQ:
                return  res.failure(InvalidSyntaxError(
                             self.current_token.pos_start,self.current_token.pos_end,
                             "अपेक्षित = (Expected =)"
                             ))
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             expr = res.register(self.expr())
             if res.error:
                 return res
@@ -118,7 +126,8 @@ class Parser:
 
         while self.current_token.type in ops:
             op_token = self.current_token
-            res.register(self.advance())
+            res.register_advancement()
+            self.advance()
             right = res.register(func_b())
             if res.error:
                 return  res
