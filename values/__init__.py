@@ -37,8 +37,10 @@ class Number:
                     'Division by zero',
                     self.context
                 )
-
-            return Number(self.value / other.value).set_context(self.context), None
+            div = self.value / other.value
+            #👇convert float->int if if int==float
+            div = int(div) if  int(div)==div else div 
+            return Number(div).set_context(self.context), None
 
     def power_by(self,other):
         if isinstance(other,Number):
@@ -52,7 +54,7 @@ class Number:
 
 
     def __repr__(self):
-        return self.translate.number_to_mar(self.value)
+        return str(self.translate.number_to_mar(self.value))
 
 # ------------Context-----------------
 class Context:
