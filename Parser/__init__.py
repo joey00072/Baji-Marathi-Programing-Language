@@ -1,7 +1,7 @@
 from Errors import InvalidSyntaxError
 from Nodes import NumberNode,BinOpNode,UnaryOpNode,VarAssignNode,VarAccessNode
 from Constants import *
-from results import ParseResult
+from Results import ParseResult
 from Context import Context
 
 
@@ -82,6 +82,31 @@ class Parser:
     def term(self):
         return self.bin_op(self.power, (TT_MUL, TT_DIV)) 
 
+    def arith_expr(self):
+        return self.bin_op(self.term, (TT_PLUS, TT_MINUS))
+
+    def comp_expr(self):
+        res = ParseResult()
+
+        if self.current_token.matches(TT_KEYWORD, 'NOT'):
+            op_token = self.current_token
+            res.register_advancement()
+            self.advance()
+
+            node = res.register(self.comp_expr())
+            if res.error: return res
+            return res.success(UnaryOpNode(op_token, node))
+        
+        node = res.register(self.bin_op(self.arith_expr, (TT_EE, TT_NE, TT_LT, TT_GT, TT_LTE, TT_GTE)))
+        
+        if res.error:
+            return res.failure(InvalidSyntaxError(
+                self.current_token.pos_start, self.current_token.pos_end,
+                "Expected int, float, identifier, '+', '-', '(' or 'NOT'"
+            ))
+
+        return res.success(node)
+
     def expr(self):
         res = ParseResult()
         if self.current_token.matches(TT_KEYWORD,'var') or self.current_token.matches(TT_KEYWORD,'चल'):
@@ -108,7 +133,8 @@ class Parser:
                 return res
             return res.success(VarAssignNode(var_name,expr))
 
-        node = res.register(self.bin_op(self.term,(TT_PLUS,TT_MINUS)))
+        node = res.register(self.bin_op(self.comp_expr, ((TT_KEYWORD, 'AND'), (TT_KEYWORD, 'OR'))))
+        
         if res.error:
             return res.failure(InvalidSyntaxError(
                 self.current_token.pos_start, self.current_token.pos_end,
@@ -124,7 +150,7 @@ class Parser:
         if res.error:
             return res
 
-        while self.current_token.type in ops:
+        while self.current_token.type in ops or (self.current_token.type, self.current_token.value) in ops:
             op_token = self.current_token
             res.register_advancement()
             self.advance()

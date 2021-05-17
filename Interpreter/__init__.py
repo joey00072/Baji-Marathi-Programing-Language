@@ -1,7 +1,7 @@
 from Values import Number
 from Errors import RTError
 from Constants import *
-from results import ParseResult,RTResult
+from Results import ParseResult,RTResult
 
 
 # ------------Interpreter----------------
@@ -64,6 +64,22 @@ class Interpreter:
             result, error = left.dived_by(right)
         elif node.op_token.type == TT_POWER:
             result , error = left.power_by(right)
+        elif node.op_token.type == TT_EE:
+            result, error = left.get_comparison_eq(right)
+        elif node.op_token.type == TT_NE:
+            result, error = left.get_comparison_ne(right)
+        elif node.op_token.type == TT_LT:
+            result, error = left.get_comparison_lt(right)
+        elif node.op_token.type == TT_GT:
+            result, error = left.get_comparison_gt(right)
+        elif node.op_token.type == TT_LTE:
+            result, error = left.get_comparison_lte(right)
+        elif node.op_token.type == TT_GTE:
+            result, error = left.get_comparison_gte(right)
+        elif node.op_token.matches(TT_KEYWORD, 'AND'):
+            result, error = left.anded_by(right)
+        elif node.op_token.matches(TT_KEYWORD, 'OR'):
+            result, error = left.ored_by(right)
 
         if error:
             return res.failure(error)
@@ -79,6 +95,8 @@ class Interpreter:
 
         if node.op_token.type == TT_MINUS:
             number, error = number.multed_by(Number(-1))
+        elif node.op_token.matches(TT_KEYWORD, 'NOT'):
+            number, error = number.notted()
 
         if error:
             return res.failure(error)

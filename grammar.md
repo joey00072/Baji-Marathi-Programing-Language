@@ -1,15 +1,31 @@
 ## GRAMMAR
 
+        expr            : KEYWORD var|चल IDENTIFIER EQ expr
+                        : comp-expr ((KEYWORD:AND|KEYWORD:OR) comp-expr)*
 
-        expr    :KEYWORD var|चल IDENTIFIER EQ expr
-                :term((PLUS|MINUS) term)*
 ---
-        term    :factor((MUL|DIV) power)*
+
+        comp-expr       : NOT comp-expr
+                        : arith-expr ((EE|LT|GT|LTE|GTE) arith-expr)*
+
 ---
-        factor  :(PLUS|MINUS) factor
-                :power
+
+        arith-expr      :term ((PLUS|MINUS) term)*
+
 ---
-        power   :atom(POWER factor)*
+
+        term            :factor((MUL|DIV) factor)*
+
 ---
-        atom    : INT | FLOAT | IDENTIFIER
-                : LPARAN expr RPARAN
+
+        factor          :(PLUS|MINUS) factor
+                        :power
+
+---
+
+        power           :atom(POWER factor)*
+
+---
+
+        atom            : INT | FLOAT | IDENTIFIER
+                        : LPARAN expr RPARAN

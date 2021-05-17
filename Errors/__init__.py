@@ -57,6 +57,9 @@ class InvalidSyntaxError(Error):
     def __init__(self, pos_start, pos_end, details):
         super().__init__("अवैध वाक्यरचना (InvalidSyntax)", pos_start, pos_end, details)
 
+class ExpectedCharError(Error):
+	def __init__(self, pos_start, pos_end, details):
+		super().__init__('Expected Character',pos_start, pos_end, details)
 
 class RTError(Error):
     def __init__(self, pos_start, pos_end, details, context):

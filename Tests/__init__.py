@@ -1,1 +1,1 @@
-from . import tests
+from . import tests,test_variables

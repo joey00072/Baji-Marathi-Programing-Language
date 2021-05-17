@@ -1,17 +1,16 @@
-
 from Lexer import Lexer
-from Parser import Parser 
+from Parser import Parser
 from Interpreter import Interpreter
 from Context import Context
-from SymbolTable import SymbolTable,global_symbol_table
-
+from SymbolTable import SymbolTable, global_symbol_table
 
 
 # ------------RUN-----------------
 # global_symbol_table = SymbolTable()
 
-def run(fn, text,debug=False):
-    
+
+def run(fn, text, debug=False):
+
     lexer = Lexer(fn, text)
     # Genarate Tokens
     tokens, error = lexer.make_tokens()
@@ -23,21 +22,21 @@ def run(fn, text,debug=False):
     ast = parser.parse()
 
     if debug:
-        print('---symbols--\n')
-        print(global_symbol_table.symbols,'\n')
-        print('---tokens--\n')
-        print(tokens,'\n')
-        print('--AST--\n')
-        print(ast.node,'\n')
-        print('--output--\n')
+        print("---symbols--\n")
+        print(global_symbol_table.symbols, "\n")
+        print("---tokens--\n")
+        print(tokens, "\n")
+        print("--AST--\n")
+        print(ast.node, "\n")
+        print("--output--\n")
 
-    if ast.error: 
+    if ast.error:
         return None, ast.error
 
     # Run program
     interpreter = Interpreter()
-    context = Context('<program>')
+    context = Context("<program>")
     context.symbol_table = global_symbol_table
     result = interpreter.visit(ast.node, context)
-    
-    return  result.value, result.error
+
+    return result.value, result.error
