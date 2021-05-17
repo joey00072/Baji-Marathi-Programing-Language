@@ -91,9 +91,3 @@ class Number:
     def __repr__(self):
         return str(self.translate.number_to_mar(self.value))
 
-# ------------Context-----------------
-class Context:
-    def __init__(self, display_name, parent=None, parent_entry_pos=None):
-        self.display_name = display_name
-        self.parent = parent
-        self.parent_entry_pos = parent_entry_pos

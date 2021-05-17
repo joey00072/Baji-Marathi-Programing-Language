@@ -88,7 +88,7 @@ class Parser:
     def comp_expr(self):
         res = ParseResult()
 
-        if self.current_token.matches(TT_KEYWORD, 'NOT'):
+        if self.current_token.matches(TT_KEYWORD, ("NOT","नाही")):
             op_token = self.current_token
             res.register_advancement()
             self.advance()
@@ -109,7 +109,7 @@ class Parser:
 
     def expr(self):
         res = ParseResult()
-        if self.current_token.matches(TT_KEYWORD,'var') or self.current_token.matches(TT_KEYWORD,'चल'):
+        if self.current_token.matches(TT_KEYWORD,('var','चल')):
             res.register_advancement()
             self.advance()
             if self.current_token.type != 'IDENTIFIER':
@@ -133,7 +133,8 @@ class Parser:
                 return res
             return res.success(VarAssignNode(var_name,expr))
 
-        node = res.register(self.bin_op(self.comp_expr, ((TT_KEYWORD, 'AND'), (TT_KEYWORD, 'OR'))))
+        pass_keywords = ((TT_KEYWORD, 'AND'),(TT_KEYWORD, 'आणि'), (TT_KEYWORD, 'OR'),(TT_KEYWORD, 'किंवा'))
+        node = res.register(self.bin_op(self.comp_expr,pass_keywords))
         
         if res.error:
             return res.failure(InvalidSyntaxError(

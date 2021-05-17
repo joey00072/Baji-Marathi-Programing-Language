@@ -40,6 +40,11 @@ class Token(object):
             self.pos_end = pos_end.copy()
 
     def matches(self, type_, value):
+        if isinstance(value,tuple):
+            match=False
+            for val in value:
+                match = match or (self.type == type_ and self.value == val)
+            return match
         return self.type == type_ and self.value == value
 
     def __repr__(self):

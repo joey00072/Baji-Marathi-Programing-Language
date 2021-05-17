@@ -39,6 +39,7 @@ class Translate(object):
             else:
                 result+=self.digit_to_mar(char)
         return result
+        
 
 
     
