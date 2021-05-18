@@ -1,1 +1,2 @@
-from . import tests,test_variables
+from Tests.test_variables import *
+from Tests.tests_arithmetic import *
