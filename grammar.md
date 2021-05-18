@@ -29,3 +29,7 @@
 
         atom            : INT | FLOAT | IDENTIFIER
                         : LPARAN expr RPARAN
+---
+        if-expr	        : KEYWORD:IF expr KEYWORD:THEN expr
+                          (KEYWORD:ELIF expr KEYWORD:THEN expr)*
+                          (KEYWORD:ELSE expr)?

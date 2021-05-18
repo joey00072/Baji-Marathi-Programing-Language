@@ -86,7 +86,8 @@ class Number:
         copy.set_pos(self.pos_start, self.pos_end)
         copy.set_context(self.context)
         return copy
-
+    def is_true(self):
+        return self.value != 0
 
     def __repr__(self):
         return str(self.translate.number_to_mar(self.value))

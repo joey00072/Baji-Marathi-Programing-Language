@@ -8,7 +8,7 @@ from Constants import *
 # -----------LEXER---------------
 
 
-class Lexer(object):
+class Lexer:
     def __init__(self, fn, text):
         self.fn = fn
         self.text = text

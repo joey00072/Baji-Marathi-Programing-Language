@@ -5,5 +5,5 @@ while True:
     result, error = main.run("<STDIN>", text, debug=True)
     if error:
         print(error.as_string())
-    else:
+    elif result:
         print(result)

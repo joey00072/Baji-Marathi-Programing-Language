@@ -1,5 +1,5 @@
 from Errors import InvalidSyntaxError
-from Nodes import NumberNode,BinOpNode,UnaryOpNode,VarAssignNode,VarAccessNode
+from Nodes import NumberNode,BinOpNode,UnaryOpNode,VarAssignNode,VarAccessNode,IfNode
 from Constants import *
 from Results import ParseResult
 
@@ -28,6 +28,65 @@ class Parser:
             ))
         return res
 
+    def if_expr(self):
+        res = ParseResult()
+        cases = []
+        else_case = None
+
+        if not self.current_token.matches(TT_KEYWORD, ('IF','जर')):
+            return res.failure(InvalidSyntaxError(
+                self.current_token.pos_start, self.current_token.pos_end,
+                f"Expected 'IF'"
+            ))
+
+        res.register_advancement()
+        self.advance()
+
+        condition = res.register(self.expr())
+        if res.error: return res
+
+        if not self.current_token.matches(TT_KEYWORD, ('THEN','तर')):
+            return res.failure(InvalidSyntaxError(
+                self.current_token.pos_start, self.current_token.pos_end,
+                f"Expected 'तर' ('THEN')"
+            ))
+
+        res.register_advancement()
+        self.advance()
+
+        expr = res.register(self.expr())
+        if res.error: return res
+        cases.append((condition, expr))
+
+        while self.current_token.matches(TT_KEYWORD, ('ELIF','किंवाजर')):
+            res.register_advancement()
+            self.advance()
+
+            condition = res.register(self.expr())
+            if res.error: return res
+
+            if not self.current_token.matches(TT_KEYWORD, ('THEN','तर')):
+                return res.failure(InvalidSyntaxError(
+                    self.current_token.pos_start, self.current_token.pos_end,
+                    f"Expected 'तर' ('THEN') "
+                ))
+
+            res.register_advancement()
+            self.advance()
+
+            expr = res.register(self.expr())
+            if res.error: return res
+            cases.append((condition, expr))
+
+        if self.current_token.matches(TT_KEYWORD, ('ELSE',"नाहीतर")):
+            res.register_advancement()
+            self.advance()
+
+            else_case = res.register(self.expr())
+            if res.error: return res
+
+        return res.success(IfNode(cases, else_case))
+
     def atom(self):
         res = ParseResult()
         token = self.current_token
@@ -55,6 +114,12 @@ class Parser:
                 self.current_token.pos_start,self.current_token.pos_end,
                 "अपेक्षित(Expected) ')' "
             ))
+
+        if token.matches(TT_KEYWORD, ('IF',"जर")):
+            if_expr = res.register(self.if_expr())
+            if res.error: return res
+            return res.success(if_expr)
+
         return res.failure(InvalidSyntaxError(
                 self.current_token.pos_start,self.current_token.pos_end,
                 "अपेक्षित(Expected) int,float, identifier '+','-' or  '('"

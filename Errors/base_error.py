@@ -1,5 +1,5 @@
 # -----------ERROR--------------
-class Error(object):
+class Error:
     def __init__(self, error_name, pos_start, pos_end, details):
         self.pos_start = pos_start
         self.pos_end = pos_end

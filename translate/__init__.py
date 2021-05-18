@@ -1,4 +1,4 @@
-class Translate(object):
+class Translate:
     def __init__(self):
         self.DIGITS_M_TO_E={'०': '0',
                              '१': '1',
