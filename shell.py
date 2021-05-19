@@ -4,7 +4,7 @@ import sys
 try:
     Debug=sys.argv[1]
 except:
-    Debug=False
+    Debug=True
 
 while True:
     text = input("बाजी >")

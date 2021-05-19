@@ -145,7 +145,7 @@ class Interpreter:
             condition = lambda: i > end_value.value
         
         while condition():
-            context.symbol_table.set(node.var_name_tok.value, Number(i))
+            context.symbol_table.set(node.var_name_token.value, Number(i))
             i += step_value.value
 
             res.register(self.visit(node.body_node, context))
@@ -158,6 +158,7 @@ class Interpreter:
 
         while True:
             condition = res.register(self.visit(node.condition_node, context))
+            print("while loop")
             if res.error: return res
 
             if not condition.is_true(): break

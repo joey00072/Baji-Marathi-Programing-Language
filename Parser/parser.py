@@ -90,28 +90,28 @@ class Parser:
     def for_expr(self):
         res = ParseResult()
 
-        if not self.current_tok.matches(TT_KEYWORD, 'FOR'):
+        if not self.current_token.matches(TT_KEYWORD, 'FOR'):
             return res.failure(InvalidSyntaxError(
-                self.current_tok.pos_start, self.current_tok.pos_end,
+                self.current_token.pos_start, self.current_tok.pos_end,
                 f"Expected 'FOR'"
             ))
 
         res.register_advancement()
         self.advance()
 
-        if self.current_tok.type != TT_IDENTIFIER:
+        if self.current_token.type != TT_IDENTIFIER:
             return res.failure(InvalidSyntaxError(
-                self.current_tok.pos_start, self.current_tok.pos_end,
+                self.current_token.pos_start, self.current_tok.pos_end,
                 f"Expected identifier"
             ))
 
-        var_name = self.current_tok
+        var_name = self.current_token
         res.register_advancement()
         self.advance()
 
-        if self.current_tok.type != TT_EQ:
+        if self.current_token.type != TT_EQ:
             return res.failure(InvalidSyntaxError(
-                self.current_tok.pos_start, self.current_tok.pos_end,
+                self.current_token.pos_start, self.current_token.pos_end,
                 f"Expected '='"
             ))
         
@@ -121,9 +121,9 @@ class Parser:
         start_value = res.register(self.expr())
         if res.error: return res
 
-        if not self.current_tok.matches(TT_KEYWORD, 'TO'):
+        if not self.current_token.matches(TT_KEYWORD, 'TO'):
             return res.failure(InvalidSyntaxError(
-                self.current_tok.pos_start, self.current_tok.pos_end,
+                self.current_token.pos_start, self.current_token.pos_end,
                 f"Expected 'TO'"
             ))
         
@@ -133,7 +133,7 @@ class Parser:
         end_value = res.register(self.expr())
         if res.error: return res
 
-        if self.current_tok.matches(TT_KEYWORD, 'STEP'):
+        if self.current_token.matches(TT_KEYWORD, 'STEP'):
             res.register_advancement()
             self.advance()
 
@@ -142,9 +142,9 @@ class Parser:
         else:
             step_value = None
 
-        if not self.current_tok.matches(TT_KEYWORD, 'THEN'):
+        if not self.current_token.matches(TT_KEYWORD, 'THEN'):
             return res.failure(InvalidSyntaxError(
-                self.current_tok.pos_start, self.current_tok.pos_end,
+                self.current_token.pos_start, self.current_token.pos_end,
                 f"Expected 'THEN'"
             ))
 
@@ -159,9 +159,9 @@ class Parser:
     def while_expr(self):
         res = ParseResult()
 
-        if not self.current_tok.matches(TT_KEYWORD, 'WHILE'):
+        if not self.current_token.matches(TT_KEYWORD, 'WHILE'):
             return res.failure(InvalidSyntaxError(
-                self.current_tok.pos_start, self.current_tok.pos_end,
+                self.current_token.pos_start, self.current_token.pos_end,
                 f"Expected 'WHILE'"
             ))
 
@@ -171,9 +171,9 @@ class Parser:
         condition = res.register(self.expr())
         if res.error: return res
 
-        if not self.current_tok.matches(TT_KEYWORD, 'THEN'):
+        if not self.current_token.matches(TT_KEYWORD, 'THEN'):
             return res.failure(InvalidSyntaxError(
-                self.current_tok.pos_start, self.current_tok.pos_end,
+                self.current_token.pos_start, self.current_token.pos_end,
                 f"Expected 'THEN'"
             ))
 
