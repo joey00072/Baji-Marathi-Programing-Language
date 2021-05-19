@@ -33,17 +33,16 @@ class Lexer:
             return TT_PLUS, None
 
         if self.current_char == "-":
-            return TT_MINUS, None
+            return self.make_minus_or_arrow()
 
         if self.current_char == "*":
-            nxt = self.peak()
-            if nxt == "*":
-                self.advance()
-                return TT_POWER, None
-            return TT_MUL, None
+            return self.make_mul_or_power()
 
         if self.current_char == "/":
             return TT_DIV, None
+
+        if self.current_char == ",":
+            return TT_COMMA, None
 
         if self.current_char == "(":
             return TT_LPAREN, None
@@ -169,5 +168,25 @@ class Lexer:
         if nxt == "=":
             self.advance()
             tok_type = TT_GTE
+
+        return tok_type, None
+
+    def make_mul_or_power(self):
+        tok_type = TT_MUL
+        nxt = self.peak()
+
+        if nxt == "*":
+            self.advance()
+            tok_type = TT_POWER
+
+        return tok_type, None
+
+    def make_minus_or_arrow(self):
+        tok_type = TT_MINUS
+        nxt = self.peak()
+
+        if nxt == ">":
+            self.advance()
+            tok_type = TT_ARROW
 
         return tok_type, None
