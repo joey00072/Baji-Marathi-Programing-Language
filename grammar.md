@@ -31,7 +31,7 @@
 
 ---
 
-        atom            : INT | FLOAT | IDENTIFIER
+        atom            : INT | FLOAT | STRING | IDENTIFIER
                         : LPARAN expr RPARAN
                         : if-expr
                         : for-expr

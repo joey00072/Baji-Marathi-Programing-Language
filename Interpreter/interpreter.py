@@ -1,4 +1,4 @@
-from Values import Number, Function
+from Values import Number, Function, String
 from Errors import RTError
 from Constants import *
 from Results import ParseResult, RTResult
@@ -26,6 +26,11 @@ class Interpreter:
             Number(node.token.value)
             .set_context(context)
             .set_pos(node.pos_start, node.pos_end)
+        )
+
+    def visit_StringNode(self, node, context):
+        return RTResult().success(
+            String(node.token.value).set_context(context).set_pos(node.pos_start, node.pos_end)
         )
 
     def visit_VarAccessNode(self, node, context):

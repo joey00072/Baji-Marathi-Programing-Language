@@ -1,3 +1,4 @@
+from typing import Counter
 from Translate import Translate
 from Errors import Error, IllegalCharacterError, ExpectedCharError
 from Lexer.position import Position
@@ -74,6 +75,9 @@ class Lexer:
             self.advance()
             return Token(token, pos_start=self.pos)
 
+        if self.current_char == '"':
+            return self.make_string()
+
         if self.current_char in DIGITS:
             return self.make_number()
 
@@ -122,6 +126,32 @@ class Lexer:
             )
         else:
             return Token(TT_INT, int(num_str), pos_start=pos_start, pos_end=self.pos)
+
+    def make_string(self):
+        string = ''
+        pos_start = self.pos.copy()
+        escape_character = False
+        self.advance()
+
+        escape_characters = {
+            'n': '\n',
+            't': '\t'
+        }
+
+        while self.current_char != None and (self.current_char != '"' or escape_character):
+            if escape_character:
+                string += escape_characters.get(self.current_char, self.current_char)
+            else:
+                if self.current_char == '\\':
+                    escape_character = True
+                else:
+                    string += self.current_char
+            self.advance()
+            escape_character = False
+        
+        self.advance()
+        return Token(TT_STRING, string, pos_start, self.pos)
+
 
     def make_identifier(self):
         id_str = ""

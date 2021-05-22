@@ -8,6 +8,9 @@ except:
 
 while True:
     text = input("बाजी >")
+    text = text.strip()
+    if len(text)==0:
+        continue
     result, error = main.run("<STDIN>", text, debug=Debug)
     if error:
         print(error.as_string())
