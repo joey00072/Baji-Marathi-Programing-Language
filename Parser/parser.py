@@ -380,7 +380,7 @@ class Parser:
             return res.failure(
                 InvalidSyntaxError(
                     self.current_token.pos_start,
-                    self.current_tok.pos_end,
+                    self.current_token.pos_end,
                     f"Expected 'FOR'",
                 )
             )
@@ -392,7 +392,7 @@ class Parser:
             return res.failure(
                 InvalidSyntaxError(
                     self.current_token.pos_start,
-                    self.current_tok.pos_end,
+                    self.current_token.pos_end,
                     f"Expected identifier",
                 )
             )
