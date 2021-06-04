@@ -78,7 +78,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    "Expected 'VAR', int, float, identifier,'IF', 'FOR', 'WHILE', 'FUN', '+', '-' or '('",
+                    "Expected 'VAR', int, float, identifier,'IF', 'FOR', 'WHILE', 'FUN', '+', '-','(' or '[' ",
                 )
             )
         return res.success(node)
@@ -105,7 +105,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    "Expected int, float, identifier, '+', '-', '(' or 'NOT'",
+                    "Expected int, float, identifier, '+', '-', '(','[' or 'NOT'",
                 )
             )
 
@@ -154,7 +154,7 @@ class Parser:
                         InvalidSyntaxError(
                             self.current_token.pos_start,
                             self.current_token.pos_end,
-                            "Expected ')', 'VAR', 'IF', 'FOR', 'WHILE', 'FUN', int, float, identifier, '+', '-', '(' or 'NOT'",
+                            "Expected ')', 'VAR', 'IF', 'FOR', 'WHILE', 'FUN', int, float, identifier, '+', '-', '(','[' or 'NOT'",
                         )
                     )
 
@@ -198,7 +198,13 @@ class Parser:
             self.advance()
             return res.success(VarAccessNode(token))
 
-        if token.type == TT_LPAREN:
+        if token.type == TT_LSQUARE: 
+            list_expr = res.register(self.list_expr())
+            if res.error:
+                return res
+            return res.success(list_expr)
+
+        if token.type == TT_LSQUARE:
             res.register_advancement()
             self.advance()
             expr = res.register(self.expr())
@@ -242,9 +248,57 @@ class Parser:
             InvalidSyntaxError(
                 self.current_token.pos_start,
                 self.current_token.pos_end,
-                "अपेक्षित(Expected) int,float, identifier,'IF', 'FOR', 'WHILE', 'FUN', '+','-' or  '('",
+                "अपेक्षित(Expected) int,float, identifier,'IF', 'FOR', 'WHILE', 'FUN', '+','-','[' or  '('",
             )
         )
+
+    def list_expr(self):
+        res = ParseResult()
+        element_nodes = []
+        pos_start = self.current_token.pos_start.copy()
+
+        if self.current_token.type != TT_LSQUARE:
+            return res.failure(InvalidSyntaxError(
+                self.current_token.pos_start, self.current_token.pos_end,
+                f"Expected '['"
+            ))
+
+        res.register_advancement()
+        self.advance()
+
+        if self.current_token.type == TT_RSQUARE:
+            res.register_advancement()
+            self.advance()
+        else:
+            element_nodes.append(res.register(self.expr()))
+            if res.error:
+                return res.failure(InvalidSyntaxError(
+                self.current_token.pos_start, self.current_token.pos_end,
+                "Expected ']', 'VAR', 'IF', 'FOR', 'WHILE', 'FUN', int, float, identifier, '+', '-', '(', '[' or 'NOT'"
+                ))
+
+            while self.current_token.type == TT_COMMA:
+                res.register_advancement()
+                self.advance()
+
+                element_nodes.append(res.register(self.expr()))
+                if res.error: return res
+
+            if self.current_token.type != TT_RSQUARE:
+                return res.failure(InvalidSyntaxError(
+                self.current_token.pos_start, self.current_token.pos_end,
+                f"Expected ',' or ']'"
+                ))
+
+            res.register_advancement()
+            self.advance()
+
+        return res.success(ListNode(
+        element_nodes,
+        pos_start,
+        self.current_token.pos_end.copy()
+        ))
+
 
     def if_expr(self):
         res = ParseResult()

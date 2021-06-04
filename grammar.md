@@ -33,10 +33,13 @@
 
         atom            : INT | FLOAT | STRING | IDENTIFIER
                         : LPARAN expr RPARAN
+                        : list-expr
                         : if-expr
                         : for-expr
                         : while-expr
                         : func-def
+---
+        list-expr       : LSQUARE (expr (COMMA expr)*)? RSQUARE
 ---
         if-expr         : KEYWORD:IF expr KEYWORD:THEN expr
                           (KEYWORD:ELIF expr KEYWORD:THEN expr)*

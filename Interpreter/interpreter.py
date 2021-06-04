@@ -1,4 +1,4 @@
-from Values import Number, Function, String
+from Values import Number, Function, String , List
 from Errors import RTError
 from Constants import *
 from Results import ParseResult, RTResult
@@ -30,8 +30,22 @@ class Interpreter:
 
     def visit_StringNode(self, node, context):
         return RTResult().success(
-            String(node.token.value).set_context(context).set_pos(node.pos_start, node.pos_end)
+            String(node.token.value)
+            .set_context(context)
+            .set_pos(node.pos_start, node.pos_end)
         )
+
+    def visit_ListNode(self, node, context):
+        res = RTResult()
+        elements = []
+
+        for element_node in node.element_nodes:
+            elements.append(res.register(self.visit(element_node, context)))
+        if res.error: return res
+
+        return res.success(
+            List(elements).set_context(context).set_pos(node.pos_start, node.pos_end)
+            )
 
     def visit_VarAccessNode(self, node, context):
         res = RTResult()

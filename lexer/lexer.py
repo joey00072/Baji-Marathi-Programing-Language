@@ -51,6 +51,12 @@ class Lexer:
         if self.current_char == ")":
             return TT_RPAREN, None
 
+        if self.current_char == "[":
+            return TT_LSQUARE, None
+
+        if self.current_char == "]":
+            return TT_RSQUARE , None
+
         if self.current_char == "=":
             return self.make_equals()
         if self.current_char == "<":
