@@ -18,6 +18,13 @@ class Parser:
         if self.token_idx < len(self.tokens):
             self.current_token = self.tokens[self.token_idx]
         return self.current_token
+    
+    def peak(self):
+        idx = self.token_idx+1
+        if idx < len(self.tokens):
+            return self.tokens[idx]
+         
+
 
     # -------------------#
 
@@ -63,7 +70,20 @@ class Parser:
             expr = res.register(self.expr())
             if res.error:
                 return res
-            return res.success(VarAssignNode(var_name, expr))
+            return res.success(VarAssignNode(var_name, expr,True))
+
+        if self.current_token.type == "IDENTIFIER":
+            var_name = self.current_token
+            next_token = self.peak()
+            if next_token!=None and next_token.type == TT_EQ:
+                res.register_advancement()
+                self.advance()
+                res.register_advancement()
+                self.advance()
+                expr = res.register(self.expr())
+                if res.error:
+                    return res
+                return res.success(VarAssignNode(var_name, expr , False))
 
         pass_keywords = (
             (TT_KEYWORD, "AND"),
