@@ -118,3 +118,6 @@ class Number(Value):
     def __repr__(self):
         return str(self.translate.number_to_mar(self.value))
 
+Number.null = Number(0)
+Number.false = Number(0)
+Number.true = Number(1)

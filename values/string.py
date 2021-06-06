@@ -3,6 +3,7 @@ from Errors import RTError
 from Translate import Translate
 from Values.number import Number
 
+
 class String(Value):
     def __init__(self, value):
         super().__init__()
@@ -28,6 +29,9 @@ class String(Value):
         copy.set_pos(self.pos_start, self.pos_end)
         copy.set_context(self.context)
         return copy
+
+    def __str__(self):
+        return self.value
 
     def __repr__(self):
         return f'"{self.value}"'
