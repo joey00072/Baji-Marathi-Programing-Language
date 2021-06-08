@@ -1,4 +1,4 @@
-from Values import Number, Function, String , List
+from Values import Number, Function, String, List
 from Errors import RTError
 from Constants import *
 from Results import ParseResult, RTResult
@@ -41,11 +41,12 @@ class Interpreter:
 
         for element_node in node.element_nodes:
             elements.append(res.register(self.visit(element_node, context)))
-        if res.error: return res
+        if res.error:
+            return res
 
         return res.success(
             List(elements).set_context(context).set_pos(node.pos_start, node.pos_end)
-            )
+        )
 
     def visit_VarAccessNode(self, node, context):
         res = RTResult()
@@ -65,14 +66,17 @@ class Interpreter:
         res = RTResult()
         var_name = node.var_name_token.value
 
-        if node.declare==False:
+        if node.declare == False:
             value = context.symbol_table.get(var_name)
-            if value==None:
+            if value == None:
                 return res.failure(
-                                    RTError(
-                                        node.pos_start, node.pos_end, f"{var_name} reference before assignment", context
-                                    )
-                                )
+                    RTError(
+                        node.pos_start,
+                        node.pos_end,
+                        f"{var_name} reference before assignment",
+                        context,
+                    )
+                )
         value = res.register(self.visit(node.value_node, context))
         if res.error:
             return res
@@ -141,7 +145,7 @@ class Interpreter:
     def visit_IfNode(self, node, context):
         res = RTResult()
 
-        for condition, expr in node.cases:
+        for condition, expr, should_return_null in node.cases:
             condition_value = res.register(self.visit(condition, context))
             if res.error:
                 return res
@@ -150,18 +154,20 @@ class Interpreter:
                 expr_value = res.register(self.visit(expr, context))
                 if res.error:
                     return res
-                return res.success(expr_value)
+                return res.success(Number.null if should_return_null else expr_value)
 
         if node.else_case:
-            else_value = res.register(self.visit(node.else_case, context))
+            expr, should_return_null = node.else_case
+            else_value = res.register(self.visit(expr, context))
             if res.error:
                 return res
-            return res.success(else_value)
+            return res.success(Number.null if should_return_null else else_value)
 
-        return res.success(None)
+        return res.success(Number.null)
 
-    def visit_ForNode(self, node, context):
+    def visit_ForNode(self, node, context, should_return_null):
         res = RTResult()
+        elements = []
 
         start_value = res.register(self.visit(node.start_value_node, context))
         if res.error:
@@ -189,29 +195,41 @@ class Interpreter:
             context.symbol_table.set(node.var_name_token.value, Number(i))
             i += step_value.value
 
-            res.register(self.visit(node.body_node, context))
+            elements.append(res.register(self.visit(node.body_node, context)))
             if res.error:
                 return res
 
-        return res.success(None)
+        return res.success(
+            Number.null
+            if should_return_null
+            else List(elements)
+            .set_context(context)
+            .set_pos(node.pos_start, node.pos_end)
+        )
 
-    def visit_WhileNode(self, node, context):
+    def visit_WhileNode(self, node, context,should_return_null):
         res = RTResult()
 
         while True:
             condition = res.register(self.visit(node.condition_node, context))
-
+            elements = []
             if res.error:
                 return res
 
             if not condition.is_true():
                 break
             print("while loop")
-            res.register(self.visit(node.body_node, context))
+            elements.append(res.register(self.visit(node.body_node, context)))
             if res.error:
                 return res
 
-        return res.success(None)
+        return res.success(
+            Number.null
+            if should_return_null
+            else List(elements)
+            .set_context(context)
+            .set_pos(node.pos_start, node.pos_end)
+        )
 
     def visit_FuncDefNode(self, node, context):
         res = RTResult()
@@ -220,7 +238,7 @@ class Interpreter:
         body_node = node.body_node
         arg_names = [arg_name.value for arg_name in node.arg_name_tokens]
         func_value = (
-            Function(func_name, body_node, arg_names)
+            Function(func_name, body_node, arg_names,node.should_return_null)
             .set_context(context)
             .set_pos(node.pos_start, node.pos_end)
         )
@@ -247,5 +265,9 @@ class Interpreter:
         return_value = res.register(value_to_call.execute(args))
         if res.error:
             return res
-        return_value = return_value.copy().set_pos(node.pos_start, node.pos_end).set_context(context)
+        return_value = (
+            return_value.copy()
+            .set_pos(node.pos_start, node.pos_end)
+            .set_context(context)
+        )
         return res.success(return_value)

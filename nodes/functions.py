@@ -1,5 +1,5 @@
 class FuncDefNode:
-    def __init__(self, var_name_token, arg_name_tokens, body_node):
+    def __init__(self, var_name_token, arg_name_tokens, body_node,should_return_null):
         self.var_name_token = var_name_token
         self.arg_name_tokens = arg_name_tokens
         self.body_node = body_node
@@ -12,6 +12,8 @@ class FuncDefNode:
             self.pos_start = self.body_node.pos_start
 
         self.pos_end = self.body_node.pos_end
+
+        self.should_return_null = should_return_null
 
     def __repr__(self):
         return f"( function {self.var_name_token}->args({self.arg_name_tokens}) ({self.body_node}) ) "

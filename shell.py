@@ -15,4 +15,7 @@ while True:
     if error:
         print(error.as_string())
     elif result:
-        print(result)
+        if len(result)==1:
+            print(result[0])
+        else:
+            print(result)

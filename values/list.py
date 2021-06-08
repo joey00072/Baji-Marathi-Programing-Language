@@ -55,6 +55,13 @@ class List(Value):
     copy.set_context(self.context)
     return copy
 
+
+  def __len__(self):
+    return len(self.elements)
+  
+  def __getitem__(self,index):
+    return self.elements[index]
+  
   def __repr__(self):
     return f'[{", ".join([str(x) for x in self.elements])}]'
 

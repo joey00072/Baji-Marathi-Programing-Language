@@ -70,6 +70,10 @@ class Lexer:
             if error:
                 return None, error
             return token, None
+
+        if self.current_char in ";\n":
+            return TT_NEWLINE,None
+
         return None, None
 
     def get_token(self):

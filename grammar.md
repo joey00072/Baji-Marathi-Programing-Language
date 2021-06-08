@@ -1,5 +1,6 @@
 ## GRAMMAR
-
+---
+        statements      : NEWLINE* expr (NEWLINE+ expr)* NEWLINE*
 ---
 
         expr            : KEYWORD var|चल IDENTIFIER EQ expr
@@ -41,16 +42,30 @@
 ---
         list-expr       : LSQUARE (expr (COMMA expr)*)? RSQUARE
 ---
-        if-expr         : KEYWORD:IF expr KEYWORD:THEN expr
-                          (KEYWORD:ELIF expr KEYWORD:THEN expr)*
-                          (KEYWORD:ELSE expr)?
+        if-expr         : KEYWORD:IF expr KEYWORD:THEN
+                          (expr if-expr-b|if-expr-c?)
+                        | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
 ---
-        for-expr        : KEYWORD:FOR IDENTIFIER EQ expr KEYWORD:TO expr 
-                          (KEYWORD:STEP expr)? KEYWORD:THEN expr
+        if-expr-b       : KEYWORD:ELIF expr KEYWORD:THEN
+                          (expr if-expr-b|if-expr-c?)
+                        | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
+---
+        if-expr-c       : KEYWORD:ELSE
+                          expr
+                        | (NEWLINE statements KEYWORD:END)
+
+---
+        for-expr        : KEYWORD:FOR IDENTIFIER EQ expr KEYWORD:TO 
+                           expr
+                        | (NEWLINE statements KEYWORD:END)expr
+                        
 ---     
-        while-expr      : KEYWORD:WHILE expr KEYWORD:THEN expr
+        while-expr      : KEYWORD:WHILE expr KEYWORD:THEN 
+                          expr
+                        | (NEWLINE statements KEYWORD:END)
 ---
         func-def        : KEYWORD:FUN IDENTIFIER?
                           LPAREN (IDENTIFIER (COMMA IDENTIFIER)*)? RPAREN
-                          ARROW expr
+                          (ARROW expr)
+                        | (NEWLINE statements KEYWORD:END)
 
