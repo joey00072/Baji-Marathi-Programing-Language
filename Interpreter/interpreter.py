@@ -310,3 +310,53 @@ class Interpreter:
 
     def visit_BreakNode(self, node, context):
         return RTResult().success_break()
+
+    def visit_IndexNode(self,node:value.IndexNode,context):
+        res = RTResult()
+        args = []
+
+        value_to_call = res.register(self.visit(node.index_node, context)) 
+
+        value_=res.register(self.visit(node.expr, context))
+        
+        if res.should_return():
+                return res
+
+        
+        try:
+            return_value = value_to_call.elements[value_.value]
+        except Exception as e:
+            return res.failure(
+                RTError(
+                    node.pos_start, node.pos_end, f"{value_to_call} Index out of Bound", context
+                )
+            )
+
+        return res.success(return_value)
+
+    def visit_IndexAssignNode(self,node:value.IndexAssignNode,context):
+        res = RTResult()
+        args = []
+
+        value_to_call = res.register(self.visit(node.index_node, context)) 
+
+        value_=res.register(self.visit(node.expr, context))
+        
+        if res.should_return():
+                return res
+
+        assgin_expr=res.register(self.visit(node.assgin_expr, context))
+        if res.should_return():
+                return res
+        
+        try:
+            value_to_call.elements[value_.value]=assgin_expr
+        except Exception as e:
+            return res.failure(
+                RTError(
+                    node.pos_start, node.pos_end, f"{value_to_call} Index out of Bound", context
+                )
+            )
+
+        return res.success(assgin_expr)
+

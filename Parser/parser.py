@@ -282,6 +282,34 @@ class Parser:
                 res.register_advancement()
                 self.advance()
             return res.success(CallNode(atom, arg_nodes))
+
+        while self.current_token.type == TT_LSQUARE:
+            res.register_advancement()
+            self.advance()
+            expr = res.register(self.expr())
+            if self.current_token.type != TT_RSQUARE:
+                return res.failure(
+                        InvalidSyntaxError(
+                            self.current_token.pos_start,
+                            self.current_token.pos_end,
+                            f"Expected ']'",
+                        )
+                    )
+            res.register_advancement()
+            self.advance()
+
+            if self.current_token.type == TT_EQ:
+                res.register_advancement()
+                self.advance()
+                assgin_expr = res.register(self.expr())
+                return res.success(IndexAssignNode(atom,expr,assgin_expr))
+            
+            atom= IndexNode(atom, expr)
+
+
+
+            
+
         return res.success(atom)
 
     def atom(self):
@@ -308,7 +336,7 @@ class Parser:
                 return res
             return res.success(list_expr)
 
-        if token.type == TT_LSQUARE:
+        if token.type == TT_LPAREN:
             res.register_advancement()
             self.advance()
             expr = res.register(self.expr())

@@ -6,7 +6,7 @@ try:
 except:
     Debug=True
 
-
+Debug=True
 
 if len(sys.argv)>1:
     main.run_from_file(sys.argv[1])
@@ -16,8 +16,6 @@ else:
         text = text.strip()
         if len(text)==0:
             continue
-        with open("example.baji") as f:
-            text = f.read()
         
         result, error = main.run("<STDIN>", text, debug=Debug)
         if error:

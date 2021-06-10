@@ -27,13 +27,17 @@
 ---
 
         factor          : (PLUS|MINUS) factor
+                        : mod
+---
+        mod             : expr MOD expr
                         : power
-
 ---
 
         power           : call(POWER factor)*
 ---
         call            : atom (LPAREN (expr (COMMA expr)*)? RPAREN)?
+                        : atom (LSQUARE (expr) LSQUARE)? EQ expr
+                        : atom (LSQUARE (expr) LSQUARE)? 
 
 ---
 

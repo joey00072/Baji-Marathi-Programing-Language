@@ -161,6 +161,9 @@ class Lexer:
             else:
                 if self.current_char == '\\':
                     escape_character = True
+                    if self.peak()=="n":
+                        self.advance()
+                        string+="\n"
                 else:
                     string += self.current_char
             self.advance()

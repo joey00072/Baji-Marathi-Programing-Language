@@ -1,3 +1,4 @@
+from Nodes import value
 from Values.value import Value
 from Values.string import String
 from Values.number import Number
@@ -9,6 +10,7 @@ import SymbolTable as S_Table
 from Results.runtime_result import RTResult
 from Values import *
 import os
+import time
 
 
 class BaseFunction(Value):
@@ -297,7 +299,23 @@ class BuiltInFunction(BaseFunction):
 
     execute_extend.arg_names = ["list"]
 
+    def execute_sleep(self, exec_ctx):
+        value_ = exec_ctx.symbol_table.get("time")
 
+        if not isinstance(value_, Number):
+            return RTResult().failure(
+                RTError(
+                    self.pos_start,
+                    self.pos_end,
+                    "Argument must be Number",
+                    exec_ctx,
+                )
+            )
+
+        time.sleep(value_.value)
+        return RTResult().success(Number.null)
+
+    execute_sleep.arg_names = ["time"]
 
 
 BuiltInFunction.print = BuiltInFunction("print")
@@ -313,6 +331,7 @@ BuiltInFunction.append = BuiltInFunction("append")
 BuiltInFunction.pop = BuiltInFunction("pop")
 BuiltInFunction.extend = BuiltInFunction("extend")
 BuiltInFunction.len = BuiltInFunction("len")
+BuiltInFunction.sleep = BuiltInFunction("sleep")
 
 
 S_Table.global_symbol_table.set("PRINT", BuiltInFunction.print)
@@ -356,3 +375,6 @@ S_Table.global_symbol_table.set("वाढवा", BuiltInFunction.extend)
 
 S_Table.global_symbol_table.set("LEN", BuiltInFunction.extend)
 S_Table.global_symbol_table.set("लांबी", BuiltInFunction.extend)
+
+
+S_Table.global_symbol_table.set("SLEEP", BuiltInFunction.sleep)
