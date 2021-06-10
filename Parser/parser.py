@@ -219,7 +219,7 @@ class Parser:
         return self.bin_op(self.term, (TT_PLUS, TT_MINUS))
 
     def term(self):
-        return self.bin_op(self.power, (TT_MUL, TT_DIV))
+        return self.bin_op(self.factor, (TT_MUL, TT_DIV))
 
     def factor(self):
         res = ParseResult()
@@ -232,10 +232,14 @@ class Parser:
                 return res
             return res.success(UnaryOpNode(token, factor))
 
-        return self.power()
+        return self.mod()
+    
+    def mod(self):
+        return self.bin_op(self.power, (TT_MOD,), self.factor)
 
     def power(self):
-        return self.bin_op(self.call, (TT_POWER,), self.factor)
+        return self.bin_op(self.call, (TT_POWER,), self.mod)
+    
 
     def call(self):
         res = ParseResult()

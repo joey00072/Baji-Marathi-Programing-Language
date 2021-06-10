@@ -102,6 +102,8 @@ class Interpreter:
             result, error = left.multed_by(right)
         elif node.op_token.type == TT_DIV:
             result, error = left.dived_by(right)
+        elif node.op_token.type == TT_MOD:
+            result, error = left.moded_by(right)
         elif node.op_token.type == TT_POWER:
             result, error = left.power_by(right)
         elif node.op_token.type == TT_EE:

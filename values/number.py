@@ -49,6 +49,20 @@ class Number(Value):
             return Number(div).set_context(self.context), None
         else:
             return None, Value.illegal_operation(self, other)
+    def moded_by(self, other):
+        if isinstance(other, Number):
+            if other.value == 0:
+                return None, RTError(
+                    other.pos_start, other.pos_end,
+                    'Mod by zero',
+                    self.context
+                )
+            div = self.value % other.value
+            #👇convert float->int if if int==float
+            div = int(div) if  int(div)==div else div 
+            return Number(div).set_context(self.context), None
+        else:
+            return None, Value.illegal_operation(self, other)
 
     def power_by(self,other):
         if isinstance(other,Number):

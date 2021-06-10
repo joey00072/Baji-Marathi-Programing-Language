@@ -41,6 +41,9 @@ class Lexer:
 
         if self.current_char == "/":
             return TT_DIV, None
+        
+        if self.current_char == "%":
+            return TT_MOD, None
 
         if self.current_char == ",":
             return TT_COMMA, None

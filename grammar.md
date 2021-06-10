@@ -29,11 +29,10 @@
         factor          : (PLUS|MINUS) factor
                         : mod
 ---
-        mod             : expr MOD expr
-                        : power
+        mod             : power((MUL|DIV) factor)*
 ---
 
-        power           : call(POWER factor)*
+        power           : call(POWER mod)*
 ---
         call            : atom (LPAREN (expr (COMMA expr)*)? RPAREN)?
                         : atom (LSQUARE (expr) LSQUARE)? EQ expr
