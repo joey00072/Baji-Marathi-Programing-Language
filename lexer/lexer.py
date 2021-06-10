@@ -73,6 +73,9 @@ class Lexer:
 
         if self.current_char in ";\n":
             return TT_NEWLINE,None
+        
+        
+            
 
         return None, None
 
@@ -94,6 +97,9 @@ class Lexer:
         if self.current_char in LETTERS:
             return self.make_identifier()
 
+        
+            
+
         position_start = self.pos.copy()
 
         return IllegalCharacterError(
@@ -106,7 +112,8 @@ class Lexer:
             if self.current_char in " \t":
                 self.advance()
                 continue
-
+            if self.current_char == "#":
+                self.skip_comment()
             current_token = self.get_token()
             if isinstance(current_token, Error):
                 return [], current_token
@@ -230,3 +237,8 @@ class Lexer:
             tok_type = TT_ARROW
 
         return tok_type, None
+
+    def skip_comment(self):
+        while self.current_char != '\n':
+            self.advance()
+        self.advance()

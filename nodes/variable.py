@@ -6,7 +6,7 @@ class VarAccessNode:
         
 
     def __repr__(self):
-        return f"{self.var_name_token}"
+        return f"(variable : ({self.var_name_token}))"
 
 class VarAssignNode:
     def __init__(self, var_name_token,value_node,declare=True):
@@ -18,4 +18,4 @@ class VarAssignNode:
         self.pos_end = self.var_name_token.pos_end
 
     def __repr__(self):
-        return f"{self.var_name_token}"
+        return f"(var assign = ({self.var_name_token}))"

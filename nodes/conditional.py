@@ -7,4 +7,4 @@ class IfNode:
         self.pos_end = (self.else_case or self.cases[len(self.cases) - 1])[0].pos_end
 
     def __repr__(self):
-        return f"(IF {self.cases}, THEN "
+        return f"(IF {self.cases}, THEN )"

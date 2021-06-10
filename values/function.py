@@ -280,6 +280,26 @@ class BuiltInFunction(BaseFunction):
     execute_extend.arg_names = ["listA", "listB"]
 
 
+    def execute_extend(self, exec_ctx):
+        list_ = exec_ctx.symbol_table.get("list")
+
+        if not isinstance(list_, List):
+            return RTResult().failure(
+                RTError(
+                    self.pos_start,
+                    self.pos_end,
+                    "Argument must be list",
+                    exec_ctx,
+                )
+            )
+
+        return RTResult().success(Number(len(list_.elements)))
+
+    execute_extend.arg_names = ["list"]
+
+
+
+
 BuiltInFunction.print = BuiltInFunction("print")
 BuiltInFunction.print_ret = BuiltInFunction("print_ret")
 BuiltInFunction.input = BuiltInFunction("input")
@@ -292,6 +312,7 @@ BuiltInFunction.is_function = BuiltInFunction("is_function")
 BuiltInFunction.append = BuiltInFunction("append")
 BuiltInFunction.pop = BuiltInFunction("pop")
 BuiltInFunction.extend = BuiltInFunction("extend")
+BuiltInFunction.len = BuiltInFunction("len")
 
 
 S_Table.global_symbol_table.set("PRINT", BuiltInFunction.print)
@@ -331,3 +352,7 @@ S_Table.global_symbol_table.set("काढा", BuiltInFunction.pop)
 
 S_Table.global_symbol_table.set("EXTEND", BuiltInFunction.extend)
 S_Table.global_symbol_table.set("वाढवा", BuiltInFunction.extend)
+
+
+S_Table.global_symbol_table.set("LEN", BuiltInFunction.extend)
+S_Table.global_symbol_table.set("लांबी", BuiltInFunction.extend)

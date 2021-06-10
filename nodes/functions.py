@@ -41,3 +41,6 @@ class ReturnNode:
 
         self.pos_start = pos_start
         self.pos_end = pos_end
+
+    def __repr__(self) -> str:
+        return f"( return ->({self.node_to_return}) ) "
