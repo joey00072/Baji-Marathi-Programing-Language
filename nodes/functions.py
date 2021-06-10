@@ -1,5 +1,5 @@
 class FuncDefNode:
-    def __init__(self, var_name_token, arg_name_tokens, body_node,should_return_null):
+    def __init__(self, var_name_token, arg_name_tokens, body_node, should_auto_return):
         self.var_name_token = var_name_token
         self.arg_name_tokens = arg_name_tokens
         self.body_node = body_node
@@ -13,7 +13,7 @@ class FuncDefNode:
 
         self.pos_end = self.body_node.pos_end
 
-        self.should_return_null = should_return_null
+        self.should_auto_return = should_auto_return
 
     def __repr__(self):
         return f"( function {self.var_name_token}->args({self.arg_name_tokens}) ({self.body_node}) ) "
@@ -32,4 +32,12 @@ class CallNode:
             self.pos_end = self.node_to_call.pos_end
 
     def __repr__(self):
-        return f"( function call {self.node_to_call}->args({self.arg_nodes}) ) "    
+        return f"( function call {self.node_to_call}->args({self.arg_nodes}) ) "
+
+
+class ReturnNode:
+    def __init__(self, node_to_return, pos_start, pos_end):
+        self.node_to_return = node_to_return
+
+        self.pos_start = pos_start
+        self.pos_end = pos_end

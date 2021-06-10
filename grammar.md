@@ -1,6 +1,11 @@
 ## GRAMMAR
 ---
-        statements      : NEWLINE* expr (NEWLINE+ expr)* NEWLINE*
+        statements      : NEWLINE* statement (NEWLINE+ statement)* NEWLINE*
+---
+        statement       : KEYWORD:RETURN expr?
+                        : KEYWORD:CONTINUE
+                        : KEYWORD:BREAK
+                        : expr
 ---
 
         expr            : KEYWORD var|चल IDENTIFIER EQ expr
@@ -43,25 +48,25 @@
         list-expr       : LSQUARE (expr (COMMA expr)*)? RSQUARE
 ---
         if-expr         : KEYWORD:IF expr KEYWORD:THEN
-                          (expr if-expr-b|if-expr-c?)
+                          (statement if-expr-b|if-expr-c?)
                         | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
 ---
         if-expr-b       : KEYWORD:ELIF expr KEYWORD:THEN
-                          (expr if-expr-b|if-expr-c?)
+                          (statement if-expr-b|if-expr-c?)
                         | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
 ---
         if-expr-c       : KEYWORD:ELSE
-                          expr
+                          statement
                         | (NEWLINE statements KEYWORD:END)
 
 ---
         for-expr        : KEYWORD:FOR IDENTIFIER EQ expr KEYWORD:TO 
-                           expr
+                          statement
                         | (NEWLINE statements KEYWORD:END)expr
                         
 ---     
         while-expr      : KEYWORD:WHILE expr KEYWORD:THEN 
-                          expr
+                          statement
                         | (NEWLINE statements KEYWORD:END)
 ---
         func-def        : KEYWORD:FUN IDENTIFIER?

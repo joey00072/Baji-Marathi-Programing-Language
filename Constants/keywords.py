@@ -1,5 +1,5 @@
 KEYWORDS = [
-    "var",
+    "VAR",
     "चल",
 
     "AND",
@@ -40,6 +40,15 @@ KEYWORDS = [
 
     "END",
     "शेवट",
+
+    "RETURN",
+    "परत",
+    
+    "CONTINUE",
+    "सुरू",
+
+    "BREAK",
+    "थांबवा",
 
 ]
 
