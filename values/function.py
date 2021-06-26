@@ -4,13 +4,14 @@ from Values.string import String
 from Values.number import Number
 from Values.list import List
 from Errors import RTError
-import Interpreter.interpreter as IPTR
+import Interpreter as IPTR
 from Context.context import Context
 import SymbolTable as S_Table
 from Results.runtime_result import RTResult
 from Values import *
 import os
 import time
+import random
 
 
 class BaseFunction(Value):
@@ -136,10 +137,11 @@ class BuiltInFunction(BaseFunction):
     #####################################
 
     def execute_print(self, exec_ctx):
-        print(str(exec_ctx.symbol_table.get("value")))
+        print(str(exec_ctx.symbol_table.get("value")),end="")
         return RTResult().success(Number.null)
 
     execute_print.arg_names = ["value"]
+    
 
     def execute_print_ret(self, exec_ctx):
         return RTResult().success(String(str(exec_ctx.symbol_table.get("value"))))
@@ -165,7 +167,7 @@ class BuiltInFunction(BaseFunction):
     execute_input_int.arg_names = []
 
     def execute_clear(self, exec_ctx):
-        os.system("cls" if os.name == "nt" else "cls")
+        os.system("cls" if os.name == "nt" else "clear")
         return RTResult().success(Number.null)
 
     execute_clear.arg_names = []
@@ -282,7 +284,7 @@ class BuiltInFunction(BaseFunction):
     execute_extend.arg_names = ["listA", "listB"]
 
 
-    def execute_extend(self, exec_ctx):
+    def execute_len(self, exec_ctx):
         list_ = exec_ctx.symbol_table.get("list")
 
         if not isinstance(list_, List):
@@ -297,7 +299,7 @@ class BuiltInFunction(BaseFunction):
 
         return RTResult().success(Number(len(list_.elements)))
 
-    execute_extend.arg_names = ["list"]
+    execute_len.arg_names = ["list"]
 
     def execute_sleep(self, exec_ctx):
         value_ = exec_ctx.symbol_table.get("time")
@@ -317,6 +319,15 @@ class BuiltInFunction(BaseFunction):
 
     execute_sleep.arg_names = ["time"]
 
+    def execute_rand(self, exec_ctx):
+        MIN = exec_ctx.symbol_table.get("MIN")
+        MAX = exec_ctx.symbol_table.get("MAX")
+        RAND = random.randint(MIN.value,MAX.value)
+
+        return RTResult().success(Number(RAND))
+
+    execute_rand.arg_names = ["MIN", "MAX"]
+
 
 BuiltInFunction.print = BuiltInFunction("print")
 BuiltInFunction.print_ret = BuiltInFunction("print_ret")
@@ -332,6 +343,7 @@ BuiltInFunction.pop = BuiltInFunction("pop")
 BuiltInFunction.extend = BuiltInFunction("extend")
 BuiltInFunction.len = BuiltInFunction("len")
 BuiltInFunction.sleep = BuiltInFunction("sleep")
+BuiltInFunction.rand = BuiltInFunction("rand")
 
 
 S_Table.global_symbol_table.set("PRINT", BuiltInFunction.print)
@@ -349,7 +361,7 @@ S_Table.global_symbol_table.set("इनपुट_संख्या", BuiltInFun
 S_Table.global_symbol_table.set("CLEAR", BuiltInFunction.clear)
 S_Table.global_symbol_table.set("पुसा", BuiltInFunction.clear)
 
-S_Table.global_symbol_table.set("CLS", BuiltInFunction.clear)
+# S_Table.global_symbol_table.set("CLS", BuiltInFunction.clear)
 
 S_Table.global_symbol_table.set("IS_NUM", BuiltInFunction.is_number)
 S_Table.global_symbol_table.set("संख्या_आहे", BuiltInFunction.is_number)
@@ -373,8 +385,11 @@ S_Table.global_symbol_table.set("EXTEND", BuiltInFunction.extend)
 S_Table.global_symbol_table.set("वाढवा", BuiltInFunction.extend)
 
 
-S_Table.global_symbol_table.set("LEN", BuiltInFunction.extend)
-S_Table.global_symbol_table.set("लांबी", BuiltInFunction.extend)
+S_Table.global_symbol_table.set("LEN", BuiltInFunction.len)
+S_Table.global_symbol_table.set("लांबी", BuiltInFunction.len)
 
 
 S_Table.global_symbol_table.set("SLEEP", BuiltInFunction.sleep)
+
+S_Table.global_symbol_table.set("RAND_INT", BuiltInFunction.rand)
+

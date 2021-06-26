@@ -43,8 +43,8 @@ class Interpreter:
 
         for element_node in node.element_nodes:
             elements.append(res.register(self.visit(element_node, context)))
-        if res.should_return():
-            return res
+            if res.should_return():
+                return res
 
         return res.success(
             List(elements).set_context(context).set_pos(node.pos_start, node.pos_end)
@@ -275,6 +275,15 @@ class Interpreter:
     def visit_CallNode(self, node, context):
         res = RTResult()
         args = []
+        func_name =node.node_to_call.var_name_token.value
+        if not context.symbol_table.get(func_name):
+            print("EERPR")
+            return res.failure(
+                RTError(
+                    node.pos_start, node.pos_end, f"call to unkown function '{func_name}' ", context
+                )
+            )
+
 
         value_to_call = res.register(self.visit(node.node_to_call, context))
         if res.should_return():

@@ -1,2 +1,96 @@
-PRINT("###\n")
-PRINT("###")
+# Game Of Life
+
+FUN get_2d_array(HIGHT,WIDTH) 
+	VAR universe =[]
+	FOR i = 0 TO HIGHT THEN 
+		VAR TLST = []
+		FOR j=0 TO WIDTH THEN
+			EXTEND(TLST,[RAND_INT(0,0)])
+		END 
+		universe = universe+TLST
+	END
+	RETURN universe
+END
+
+VAR SIZE = 10
+VAR universe  = get_2d_array(SIZE,2*SIZE)
+
+
+universe[1+2][0+2]=1
+universe[0+2][2+2]=1
+universe[1+2][2+2]=1
+universe[2+2][2+2]=1
+universe[2+2][1+2]=1
+
+FUN print_universe()
+	FOR i=0 TO LEN(universe) THEN
+		FOR j=0 TO LEN(universe[0]) THEN
+			PRINT(".")
+			IF universe[i][j]==1 THEN
+				PRINT("#")
+			ELSE 
+				PRINT(".")
+			END
+		END
+		PRINT("\n")
+	END
+END 
+
+
+FUN foo(ox,i) 
+	VAR x =0	
+	x = (ox+i+SIZE)%SIZE
+	RETURN x
+END
+
+
+
+
+FUN is_alive(ox,oy)
+	VAR cnt =0
+	VAR x =0
+	VAR y =0
+	FOR i=-1 TO 2 THEN 
+		FOR j=-1 TO 2 THEN 
+			IF (i==0 AND j==0) != 1 THEN
+				x = foo(ox,i)
+				y = foo(oy,j)
+				IF universe[y][x]==1 THEN
+					cnt= cnt+1
+				END
+			END 
+		END 
+	END
+	VAR RT = 0
+	IF cnt<2 OR cnt>3 THEN
+		RT= 0
+	ELIF universe[oy][ox]==1 AND cnt<4 THEN
+		RT= 1
+	ELIF cnt==3 THEN
+		RT= 1
+	END
+	RETURN RT
+END
+
+FUN next_gen()
+	VAR u2  = get_2d_array(SIZE,2*SIZE)
+	FOR y=0 TO SIZE THEN 
+		FOR x=0 TO SIZE THEN
+			u2[y][x]=is_alive(x,y)
+		END
+	END
+	RETURN u2
+END
+
+
+
+FOR i=1 TO 100 THEN
+	CLEAR()
+	print_universe()
+	universe = next_gen()
+	SLEEP(0.1)
+END
+
+PRINT("ST)
+doof()
+PRINT("HI")

@@ -855,7 +855,7 @@ class Parser:
         if res.error:
             return res
 
-        if not self.current_token.matches(TT_KEYWORD, "END"):
+        if not self.current_token.matches(TT_KEYWORD,("END", "शेवट")):
             return res.failure(
                 InvalidSyntaxError(
                     self.current_token.pos_start,

@@ -1,0 +1,26 @@
+FUN get_2d_array(length) 
+	VAR arr =[]
+	FOR i = 0 TO length THEN 
+		EXTEND(arr,[RAND_INT(0,0)])
+	END
+	RETURN arr
+END
+
+VAR arr = get_2d_array(100)
+
+
+FUN fib(n)
+	IF n<2 THEN
+		RETURN 1
+	ELIF arr[n]!=0 THEN
+		RETURN arr[n]
+	ELSE
+		arr[n]=fib(n-1) + fib(n-2)
+		RETURN arr[n]
+	END
+END
+
+FOR i=0 TO 10 THEN
+	PRINT(fib(i))
+	PRINT("\n")
+END

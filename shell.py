@@ -1,12 +1,12 @@
 import main
 import sys
 
-try:
-    Debug=sys.argv[-1] == True
-except:
-    Debug=True
+# try:
+#     Debug=sys.argv[-1] == True
+# except:
+#     Debug=True
 
-Debug=True
+Debug=False
 
 if len(sys.argv)>1:
     main.run_from_file(sys.argv[1])

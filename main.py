@@ -11,9 +11,9 @@ import sys
 
 # ------------RUN-----------------
 
-
+context =None
 def run(fn, text, debug=False):
-
+    global context
     lexer = Lexer(fn, text)
     # Genarate Tokens
     tokens, error = lexer.make_tokens()
