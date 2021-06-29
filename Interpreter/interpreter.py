@@ -58,7 +58,7 @@ class Interpreter:
         if value == None:
             return res.failure(
                 RTError(
-                    node.pos_start, node.pos_end, f"{var_name} is not defined", context
+                    node.pos_start, node.pos_end, f"{var_name} परिभाषित नाही (not defined)", context
                 )
             )
         value = value.copy().set_pos(node.pos_start, node.pos_end).set_context(context)
@@ -75,7 +75,7 @@ class Interpreter:
                     RTError(
                         node.pos_start,
                         node.pos_end,
-                        f"{var_name} reference before assignment",
+                        f"{var_name} नेमणूक करण्यापूर्वी संदर्भ(reference before assignment)",
                         context,
                     )
                 )
@@ -280,7 +280,7 @@ class Interpreter:
             print("EERPR")
             return res.failure(
                 RTError(
-                    node.pos_start, node.pos_end, f"call to unkown function '{func_name}' ", context
+                    node.pos_start, node.pos_end, f"अज्ञात कार्य बोलावले(call to unknown function)'{func_name}' ", context
                 )
             )
 
@@ -339,7 +339,7 @@ class Interpreter:
         except Exception as e:
             return res.failure(
                 RTError(
-                    node.pos_start, node.pos_end, f"{value_to_call} Index out of Bound", context
+                    node.pos_start, node.pos_end, f"{value_to_call} अनुक्रमणिका मर्यादित नाही(Index out of bound) ", context
                 )
             )
 
@@ -365,7 +365,7 @@ class Interpreter:
         except Exception as e:
             return res.failure(
                 RTError(
-                    node.pos_start, node.pos_end, f"{value_to_call} Index out of Bound", context
+                    node.pos_start, node.pos_end, f"{value_to_call} अनुक्रमणिका मर्यादित नाही(Index out of bound)", context
                 )
             )
 

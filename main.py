@@ -61,13 +61,13 @@ def run_from_file(file_name):
         exit()
     
     try:
-        with open(file_name , 'r') as f:
+        with open(file_name , 'r',encoding='utf-8') as f:
             script = f.read()
     except BaseException as e:
         print("Failed to load Script")
         print(str(e))
     
-    _,error = run(f"<{name}>", script, debug=True)
+    _,error = run(f"<{name}>", script, debug=False)
 
     if error:
         print(error.as_string())

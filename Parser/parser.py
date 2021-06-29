@@ -119,7 +119,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    "Expected 'RETURN', 'CONTINUE', 'BREAK', 'VAR', 'IF', 'FOR', 'WHILE', 'FUN', int, float, identifier, '+', '-', '(', '[' or 'NOT'",
+                    "अपेक्षित(Expected)  'परत', 'सुरू', 'थांबवा', 'चल', 'जर', 'वारंवार', 'जोपर्यंत', 'कार्य', 'संख्या', 'शब्द', '+', '-', '(', '['",
                 )
             )
         return res.success(expr)
@@ -182,7 +182,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    "Expected 'VAR', int, float, identifier,'IF', 'FOR', 'WHILE', 'FUN', '+', '-','(' or '[' ",
+                    "अपेक्षित(Expected) 'चल',  'संख्या', 'शब्द','जर', 'वारंवार', 'जोपर्यंत', 'कार्य', '+', '-','(' or '[' ",
                 )
             )
         return res.success(node)
@@ -209,7 +209,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    "Expected int, float, identifier, '+', '-', '(','[' or 'NOT'",
+                    "अपेक्षित(Expected),  'संख्या', 'शब्द', '+', '-', '(','['",
                 )
             )
 
@@ -262,7 +262,7 @@ class Parser:
                         InvalidSyntaxError(
                             self.current_token.pos_start,
                             self.current_token.pos_end,
-                            "Expected ')', 'VAR', 'IF', 'FOR', 'WHILE', 'FUN', int, float, identifier, '+', '-', '(','[' or 'NOT'",
+                            "अपेक्षित(Expected) ')', 'चल', 'जर', 'वारंवार', 'जोपर्यंत', 'कार्य', 'संख्या', 'शब्द', '+', '-', '(','[' or 'NOT'",
                         )
                     )
 
@@ -279,7 +279,7 @@ class Parser:
                         InvalidSyntaxError(
                             self.current_token.pos_start,
                             self.current_token.pos_end,
-                            f"Expected ',' or ')'",
+                            f"अपेक्षित(Expected) ',' or ')'",
                         )
                     )
 
@@ -296,7 +296,7 @@ class Parser:
                         InvalidSyntaxError(
                             self.current_token.pos_start,
                             self.current_token.pos_end,
-                            f"Expected ']'",
+                            f"अपेक्षित(Expected) ']'",
                         )
                     )
             res.register_advancement()
@@ -398,7 +398,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    f"Expected '['",
+                    f"अपेक्षित(Expected) '['",
                 )
             )
 
@@ -415,7 +415,7 @@ class Parser:
                     InvalidSyntaxError(
                         self.current_token.pos_start,
                         self.current_token.pos_end,
-                        "Expected ']', 'VAR', 'IF', 'FOR', 'WHILE', 'FUN', int, float, identifier, '+', '-', '(', '[' or 'NOT'",
+                        "अपेक्षित(Expected) ']', 'चल', 'जर', 'वारंवार', 'जोपर्यंत', 'कार्य', 'संख्या', 'शब्द', '+', '-', '(', '[' or 'नाही'",
                     )
                 )
 
@@ -432,7 +432,7 @@ class Parser:
                     InvalidSyntaxError(
                         self.current_token.pos_start,
                         self.current_token.pos_end,
-                        f"Expected ',' or ']'",
+                        f"अपेक्षित(Expected) ',' or ']'",
                     )
                 )
 
@@ -479,7 +479,7 @@ class Parser:
                         InvalidSyntaxError(
                             self.current_token.pos_start,
                             self.current_token.pos_end,
-                            "Expected 'END'",
+                            "अपेक्षित(Expected) 'शेवट'",
                         )
                     )
             else:
@@ -516,7 +516,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    f"Expected '{case_keyword}'",
+                    f"अपेक्षित(Expected) '{case_keyword}'",
                 )
             )
 
@@ -532,7 +532,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    f"Expected 'THEN'",
+                    f"अपेक्षित(Expected) 'तर'",
                 )
             )
 
@@ -579,7 +579,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    f"Expected 'FOR'",
+                    f"अपेक्षित(Expected) 'वारंवार'",
                 )
             )
 
@@ -591,7 +591,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    f"Expected identifier",
+                    f"अपेक्षित(Expected) शब्द",
                 )
             )
 
@@ -604,7 +604,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    f"Expected '='",
+                    f"अपेक्षित(Expected) '='",
                 )
             )
 
@@ -620,7 +620,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    f"Expected 'TO'",
+                    f"अपेक्षित(Expected) 'ते'",
                 )
             )
 
@@ -646,7 +646,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    f"Expected 'THEN'",
+                    f"अपेक्षित(Expected) 'तर'",
                 )
             )
 
@@ -666,7 +666,7 @@ class Parser:
                     InvalidSyntaxError(
                         self.current_token.pos_start,
                         self.current_token.pos_end,
-                        f"Expected 'END'",
+                        f"अपेक्षित(Expected) 'शेवट'",
                     )
                 )
 
@@ -693,7 +693,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    f"Expected 'WHILE'",
+                    f"अपेक्षित(Expected) 'जोपर्यंत'",
                 )
             )
 
@@ -709,7 +709,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    f"Expected 'THEN'",
+                    f"अपेक्षित(Expected) 'तर'",
                 )
             )
 
@@ -729,7 +729,7 @@ class Parser:
                     InvalidSyntaxError(
                         self.current_token.pos_start,
                         self.current_token.pos_end,
-                        f"Expected 'END'",
+                        f"अपेक्षित(Expected) 'शेवट'",
                     )
                 )
 
@@ -752,7 +752,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    f"Expected 'FUN'",
+                    f"अपेक्षित(Expected) 'FUN'",
                 )
             )
 
@@ -768,7 +768,7 @@ class Parser:
                     InvalidSyntaxError(
                         self.current_token.pos_start,
                         self.current_token.pos_end,
-                        f"Expected '('",
+                        f"अपेक्षित(Expected) '('",
                     )
                 )
         else:
@@ -778,7 +778,7 @@ class Parser:
                     InvalidSyntaxError(
                         self.current_token.pos_start,
                         self.current_token.pos_end,
-                        f"Expected identifier or '('",
+                        f"अपेक्षित(Expected) शब्द or '('",
                     )
                 )
 
@@ -800,7 +800,7 @@ class Parser:
                         InvalidSyntaxError(
                             self.current_token.pos_start,
                             self.current_token.pos_end,
-                            f"Expected identifier",
+                            f"अपेक्षित(Expected) शब्द",
                         )
                     )
 
@@ -813,7 +813,7 @@ class Parser:
                     InvalidSyntaxError(
                         self.current_token.pos_start,
                         self.current_token.pos_end,
-                        f"Expected ',' or ')'",
+                        f"अपेक्षित(Expected) ',' or ')'",
                     )
                 )
         else:
@@ -822,7 +822,7 @@ class Parser:
                     InvalidSyntaxError(
                         self.current_token.pos_start,
                         self.current_token.pos_end,
-                        f"Expected identifier or ')'",
+                        f"अपेक्षित(Expected) शब्द or ')'",
                     )
                 )
 
@@ -844,7 +844,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    f"Expected '->' or NEWLINE",
+                    f"अपेक्षित(Expected) '->' or '\\n'NEWLINE",
                 )
             )
 
@@ -860,7 +860,7 @@ class Parser:
                 InvalidSyntaxError(
                     self.current_token.pos_start,
                     self.current_token.pos_end,
-                    f"Expected 'END'",
+                    f"अपेक्षित(Expected) 'शेवट'",
                 )
             )
 

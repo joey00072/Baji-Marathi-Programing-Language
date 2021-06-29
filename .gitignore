@@ -2,3 +2,6 @@ temp.py
 __pycache__/
 .vscode/
 temp.txt
+dist/
+build/
+baji.spec

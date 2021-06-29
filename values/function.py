@@ -361,8 +361,6 @@ S_Table.global_symbol_table.set("इनपुट_संख्या", BuiltInFun
 S_Table.global_symbol_table.set("CLEAR", BuiltInFunction.clear)
 S_Table.global_symbol_table.set("पुसा", BuiltInFunction.clear)
 
-# S_Table.global_symbol_table.set("CLS", BuiltInFunction.clear)
-
 S_Table.global_symbol_table.set("IS_NUM", BuiltInFunction.is_number)
 S_Table.global_symbol_table.set("संख्या_आहे", BuiltInFunction.is_number)
 
@@ -390,6 +388,8 @@ S_Table.global_symbol_table.set("लांबी", BuiltInFunction.len)
 
 
 S_Table.global_symbol_table.set("SLEEP", BuiltInFunction.sleep)
+S_Table.global_symbol_table.set("झोप", BuiltInFunction.sleep)
+
 
 S_Table.global_symbol_table.set("RAND_INT", BuiltInFunction.rand)
 

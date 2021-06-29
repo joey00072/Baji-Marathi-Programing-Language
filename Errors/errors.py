@@ -15,12 +15,12 @@ class InvalidSyntaxError(Error):
 
 class ExpectedCharError(Error):
     def __init__(self, pos_start, pos_end, details):
-        super().__init__("Expected Character", pos_start, pos_end, details)
+        super().__init__("अपेक्षित अक्षर (Expected Character)", pos_start, pos_end, details)
 
 
 class RTError(Error):
     def __init__(self, pos_start, pos_end, details, context):
-        super().__init__("Runtime Error", pos_start, pos_end, details)
+        super().__init__("प्रोग्राम चालू असताना त्रुटी आली (Runtime Error)", pos_start, pos_end, details)
         self.context = context
 
     def as_string(self):
@@ -44,4 +44,4 @@ class RTError(Error):
             pos = ctx.parent_entry_pos
             ctx = ctx.parent
 
-        return "Traceback (most recent call last):\n" + result
+        return "त्रुटी मागोवा (Traceback (most recent call last)):\n" + result
