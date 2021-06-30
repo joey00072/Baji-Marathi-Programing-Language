@@ -34,13 +34,14 @@ Save file with `.baji` extension.
 <br>
 RUN
 ```
-baji file.baji
+baji example.baji
 ```
 ## Docs
 refer [DOCS.md](./DOCS.md)
 
 ## Installation
 1. Download binary from Here
+    * [RELEASE](https://github.com/joey00072/Marathi-Programing-Language/releases/tag/1.0.1)
 
     * Windows baji.zip 
 
@@ -50,18 +51,19 @@ refer [DOCS.md](./DOCS.md)
 2. 
     **Winodows**<br/>
     Unzip  baji.zip move `baji.exe` to suitable folder path 
-
-    C:/BAJI/baji.exe -> recommanded
-
+    ```
+    C:/baji/baji.exe -> recommanded
+    ```
     Then set environment variables  [guide](https://support.microsoft.com/en-us/topic/how-to-manage-environment-variables-in-windows-xp-5bf6725b-655e-151c-0b55-9a8c9c7f747d)
 
 3. **Linux/Mac**
-    Untar baji.tar
+    Download baji.tar 
     then run this command
     ```
-    sudo cp baji /usr/bin/
+    tar -xvf baji.tar && sudo mv .baji /bin/ && echo 'export PATH="$PATH:/bin/.baji/"' >> ~/.bashrc && source ~/.bashrc
     ```
-    note : you need password to run this command
+    note : you need password to run this command also
+    change bashrc to zshrc if you are using zsh shell
 4. Run File
     ```
     baji example.baji
