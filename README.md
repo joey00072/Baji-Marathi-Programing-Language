@@ -100,7 +100,6 @@ you can also content me on 00shxf@gmail.com
 
 ## Contributions
 Any contribution is welcome, drop me a line or file a pull request.<br/>
-Just Don't commit on master brach
 
 ## Licenses
 Refer [LICENSE](./LICENSE)
