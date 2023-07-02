@@ -103,3 +103,5 @@ Any contribution is welcome, drop me a line or file a pull request.<br/>
 
 ## Licenses
 Refer [LICENSE](./LICENSE)
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R6R8KQTZ5)
